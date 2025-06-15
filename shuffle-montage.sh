@@ -29,9 +29,9 @@ for cmd in ffmpeg ffprobe awk realpath; do
   command -v $cmd >/dev/null || { echo "'$cmd' not found"; exit 1; }
 done
 
-TARGET_SEC=120
-MIN_CLIP=4
-MAX_CLIP=12
+: "${TARGET_SEC:=120}"
+: "${MIN_CLIP:=4}"
+: "${MAX_CLIP:=12}"
 
 typeset -a durations prefix
 file_count=${#FILES[@]}
@@ -73,7 +73,7 @@ done
 
 TMPDIR=$(mktemp -d)
 CLIP_LIST="$TMPDIR/clip_list.txt"
-> "$CLIP_LIST"
+: > "$CLIP_LIST"
 
 PART_DUR=$(awk 'BEGIN{printf "%f", '"$total_sec"'/'"$N"'}')
 echo "Each partition ≈ ${PART_DUR}s" >&2
@@ -97,7 +97,7 @@ for (( i=1; i<=N; i++ )); do
   out_clip="$TMPDIR/clip${i}.mkv"
   echo "Clip $i: file='${file##*/}', start=${local_start}s, len=${L}s" >&2
 
-  ffmpeg -hide_banner -loglevel error -y -ss "$local_start" -i "$file" -t "$L" -c copy -avoid_negative_ts make_zero "$out_clip"
+  ffmpeg -hide_banner -loglevel error -y -ss "$local_start" -copyts -i "$file" -t "$L" -c copy -avoid_negative_ts make_zero "$out_clip"
 
   printf "file '%s'\n" "$out_clip" >>"$CLIP_LIST"
 done

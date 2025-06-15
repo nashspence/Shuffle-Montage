@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Stub osascript for tests
+# Log arguments if OSASCRIPT_LOG is set
+if [ -n "$OSASCRIPT_LOG" ]; then
+  echo "osascript $*" >> "$OSASCRIPT_LOG"
+fi
+exit 0

@@ -1,0 +1,20 @@
+name: macOS Integration
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  integration:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: |
+          brew update
+          brew install ffmpeg
+      - name: Run integration test
+        run: |
+          zsh tests/integration/integration_test.zsh
+

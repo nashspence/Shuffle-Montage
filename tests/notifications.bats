@@ -1,7 +1,7 @@
 #!/usr/bin/env bats
 load "./test_helper.bash"
 
-@test "desktop notifications are sent" {
+@test "sends desktop notifications" {
   run zsh ./shuffle-montage.sh "$VIDEO_DIR"/test*.mp4
   assert_success
   [ -f "$OSASCRIPT_LOG" ]

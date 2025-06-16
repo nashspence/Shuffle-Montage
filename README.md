@@ -29,6 +29,22 @@ Several optional environment variables control clip planning:
 - `TARGET_SEC` — desired total duration in seconds (default `120`)
 - `MIN_CLIP` / `MAX_CLIP` — bounds for individual clip length
 
+## Features
+
+- [**Fails without input**](tests/no_input.bats#L4-L7) — exits with an error and
+  shows a notification if no video files are given.
+- [**Desktop notifications**](tests/notifications.bats#L4-L12) — notifies when
+  the shuffle montage starts and when the finished video is placed on the
+  Desktop.
+- [**Produces output and log**](tests/montage_success.bats#L5-L10) — writes
+  `montage_<timestamp>.mkv` and `Montage-Shuffle-<timestamp>.log` to the
+  Desktop.
+- [**Plans clip count**](tests/montage_success.bats#L13-L18) — computes how many
+  clips to use from `TARGET_SEC`, `MIN_CLIP`, and `MAX_CLIP` so the total
+  montage length equals `TARGET_SEC`.
+- [**Clip length bounds**](tests/clip_length_range.bats#L4-L11) — every clip's
+  duration stays between `MIN_CLIP` and `MAX_CLIP`.
+
 ## How it Works
 
 1. **Measure durations** – Each input file's length is read with `ffprobe` and

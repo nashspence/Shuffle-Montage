@@ -11,7 +11,7 @@ START_TIME="$(date -u '+%Y-%m-%d %H:%M:%S UTC')"
 echo "Started at $START_TIME" >&2
 trap 'EC=$?; ET=$(date -u "+%Y-%m-%d %H:%M:%S UTC"); echo "Exited with code $EC at $ET" >&2' EXIT
 
-export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+export PATH="$PATH:/opt/homebrew/bin:/usr/local/bin"
 
 notify() {
   command -v osascript >/dev/null 2>&1 && \
@@ -99,7 +99,7 @@ for (( i=1; i<=N; i++ )); do
   out_clip="$TMPDIR/clip${i}.mkv"
   echo "Clip $i: file='${file##*/}', start=${local_start}s, len=${L}s" >&2
 
-  ffmpeg -hide_banner -loglevel error -y -ss "$local_start" -copyts -i "$file" -t "$L" -c copy -avoid_negative_ts make_zero "$out_clip"
+  ffmpeg -hide_banner -loglevel error -y -ss "$local_start" -i "$file" -t "$L" -c copy -avoid_negative_ts make_zero "$out_clip"
 
   printf "file '%s'\n" "$out_clip" >>"$CLIP_LIST"
 done
@@ -108,6 +108,8 @@ OUT_DESKTOP="$HOME/Desktop/montage_$(date +'%Y%m%d_%H%M%S').mkv"
 echo "Concatenating → $OUT_DESKTOP" >&2
 
 ffmpeg -hide_banner -loglevel error -y -f concat -safe 0 -i "$CLIP_LIST" -c copy -movflags +faststart "$OUT_DESKTOP"
+ffmpeg -hide_banner -loglevel error -y -i "$OUT_DESKTOP" -t "$TARGET_SEC" -c copy -movflags +faststart -f matroska "$OUT_DESKTOP.tmp"
+mv "$OUT_DESKTOP.tmp" "$OUT_DESKTOP"
 
 rm -rf "$TMPDIR"
 echo "Done → $OUT_DESKTOP" >&2

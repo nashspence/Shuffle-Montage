@@ -1,0 +1,19 @@
+name: BATS Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  bats:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg bats bats-assert bats-support zsh
+      - name: Run BATS tests
+        run: |
+          bats tests

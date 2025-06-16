@@ -19,6 +19,13 @@ Run the script with the video files you want to sample from:
 
 The resulting montage is written to your Desktop as `montage_<timestamp>.mkv`. A log file named `Montage-Shuffle-<timestamp>.log` is also placed on the Desktop.
 
+### Environment Variables
+
+Several optional environment variables control clip planning:
+
+- `TARGET_SEC` — desired total duration in seconds (default `120`)
+- `MIN_CLIP` / `MAX_CLIP` — bounds for individual clip length
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE).

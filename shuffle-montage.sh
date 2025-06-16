@@ -4,7 +4,8 @@ set -euo pipefail
 LOGFILE="$HOME/Desktop/Montage-Shuffle-$(date +'%Y%m%dT%H%M%S').log"
 touch "$LOGFILE" 2>/dev/null || { echo "Cannot write to '$LOGFILE'." >&2; exit 1; }
 exec 2>>"$LOGFILE"
-osascript -e "tell application \"Terminal\" to do script \"tail -f '$LOGFILE'\""
+command -v osascript >/dev/null 2>&1 && \
+  osascript -e "tell application \"Terminal\" to do script \"tail -f '$LOGFILE'\"" || true
 
 START_TIME="$(date -u '+%Y-%m-%d %H:%M:%S UTC')"
 echo "Started at $START_TIME" >&2
@@ -13,7 +14,8 @@ trap 'EC=$?; ET=$(date -u "+%Y-%m-%d %H:%M:%S UTC"); echo "Exited with code $EC 
 export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
 
 notify() {
-  osascript -e "display notification \"$*\" with title \"Montage Shuffle\""
+  command -v osascript >/dev/null 2>&1 && \
+    osascript -e "display notification \"$*\" with title \"Montage Shuffle\"" || true
 }
 
 FILES=( "$@" )

@@ -1,7 +1,7 @@
 #!/usr/bin/env bats
 load "./test_helper.bash"
 
-@test "each clip length is within bounds" {
+@test "clip length within bounds" {
   run zsh ./shuffle-montage.sh "$VIDEO_DIR"/test*.mp4
   assert_success
   log_file=$(ls "$HOME/Desktop"/Montage-Shuffle-*.log)

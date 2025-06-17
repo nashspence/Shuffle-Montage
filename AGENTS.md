@@ -23,7 +23,7 @@
   [**<feature name>**](<path/to/testfile>#Lstart-Lend) — <short description>
   ```
 
-  * `<feature name>` must exactly match the test name.
+  * Test name must exactily match the `<feature name>`.
   * Link must point directly to the test file and line range.
 
 ## 4. CI Failure Reporting
